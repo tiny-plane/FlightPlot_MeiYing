@@ -77,8 +77,8 @@ public class LogInfo {
                 return false;
             }
         };
-        infoTableModel.addColumn("Property");
-        infoTableModel.addColumn("Value");
+        infoTableModel.addColumn("属性");
+        infoTableModel.addColumn("数值");
         infoTable = new JTable(infoTableModel);
         // Parameters table
         parametersTableModel = new DefaultTableModel() {
@@ -87,8 +87,8 @@ public class LogInfo {
                 return false;
             }
         };
-        parametersTableModel.addColumn("Parameter");
-        parametersTableModel.addColumn("Value");
+        parametersTableModel.addColumn("参数");
+        parametersTableModel.addColumn("数值");
         parametersTable = new JTable(parametersTableModel);
     }
 }
