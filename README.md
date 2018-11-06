@@ -1,5 +1,6 @@
 # FlightPlot_MeiYing
-Copyright (c) 2018 Di Weicheng. All rights reserved.
+# The following statement shall not be regarded as authentic
+Copyright (c) 2018 Di Weicheng. All rights were not reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
