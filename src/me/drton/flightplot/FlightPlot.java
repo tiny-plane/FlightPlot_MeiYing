@@ -65,6 +65,8 @@ public class FlightPlot {
     private static final int TIME_MODE_LOG_START = 0;
     private static final int TIME_MODE_BOOT = 1;
     private static final int TIME_MODE_GPS = 2;
+    private static final int help1 = 0;
+    private static final  int help2 = 1;
     private static final NumberFormat doubleNumberFormat = NumberFormat.getInstance(Locale.ROOT);
 
     static {
@@ -73,8 +75,8 @@ public class FlightPlot {
         doubleNumberFormat.setMaximumFractionDigits(10);
     }
 
-    private static String appName = "FlightPlot";
-    private static String version = "0.3.2";
+    private static String appName = "飞行数据后处理软件 魅影版";
+    private static String version = "1.0";
     private static String appNameAndVersion = appName + " v." + version;
     private static String colorParamPrefix = "Color ";
     private final Preferences preferences;
@@ -101,6 +103,7 @@ public class FlightPlot {
     private JButton savePresetButton;
     private JCheckBoxMenuItem autosavePresets;
     private JRadioButtonMenuItem[] timeModeItems;
+    private JRadioButtonMenuItem[] helpItems;
     private LogReader logReader = null;
     private XYSeriesCollection dataset;
     private JFreeChart chart;
@@ -173,7 +176,7 @@ public class FlightPlot {
             @Override
             public void run() {
                 StringBuilder fieldsValue = new StringBuilder();
-                String processorTitle = "New";
+                String processorTitle = "new";
                 if (fieldsListDialog.getSelectedFields().size() == 1)
                     processorTitle = fieldsListDialog.getSelectedFields().get(0);
                 for (String field : fieldsListDialog.getSelectedFields()) {
@@ -297,7 +300,7 @@ public class FlightPlot {
             openLogFileChooser.addChoosableFileFilter(filter);
         }
         openLogFileChooser.setFileFilter(logExtensionfilters[0]);
-        openLogFileChooser.setDialogTitle("Open Log");
+        openLogFileChooser.setDialogTitle("打开日志");
 
         presetComboBox.setMaximumRowCount(30);
         presetComboBox.addActionListener(new ActionListener() {
@@ -461,8 +464,8 @@ public class FlightPlot {
     }
 
     private void loadPreferences() throws BackingStoreException {
-        PreferencesUtil.loadWindowPreferences(mainFrame, preferences.node("MainWindow"), 800, 600);
-        PreferencesUtil.loadWindowPreferences(fieldsListDialog, preferences.node("FieldsListDialog"), 300, 600);
+        PreferencesUtil.loadWindowPreferences(mainFrame, preferences.node("MainWindow"), 1400, 900);
+        PreferencesUtil.loadWindowPreferences(fieldsListDialog, preferences.node("FieldsListDialog"), 600, 800);
         PreferencesUtil.loadWindowPreferences(addProcessorDialog, preferences.node("AddProcessorDialog"), -1, -1);
         PreferencesUtil.loadWindowPreferences(logInfo.getFrame(), preferences.node("LogInfoFrame"), 600, 600);
         String logDirectoryStr = preferences.get("LogDirectory", null);
@@ -596,7 +599,7 @@ public class FlightPlot {
         plot.setRenderer(renderer);
 
         // Domain (X) axis - seconds
-        domainAxisSeconds = new NumberAxis("T") {
+        domainAxisSeconds = new NumberAxis("时间") {
             // Use default auto range to adjust range
             protected void autoAdjustRange() {
                 setRange(getDefaultAutoRange());
@@ -607,13 +610,13 @@ public class FlightPlot {
         domainAxisSeconds.setUpperMargin(0.0);
 
         // Domain (X) axis - date
-        domainAxisDate = new DateAxis("T") {
+        domainAxisDate = new DateAxis("时间") {
             // Use default auto range to adjust range
             protected void autoAdjustRange() {
                 setRange(getDefaultAutoRange());
             }
         };
-        domainAxisDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+        domainAxisDate.setTimeZone(TimeZone.getTimeZone("格林尼治时间"));
         domainAxisDate.setLowerMargin(0.0);
         domainAxisDate.setUpperMargin(0.0);
 
@@ -653,8 +656,8 @@ public class FlightPlot {
                 return col == 0 ? Boolean.class : String.class;
             }
         };
-        processorsListModel.addColumn("");
-        processorsListModel.addColumn("Processor");
+        processorsListModel.addColumn("显示");
+        processorsListModel.addColumn("参数名[数据处理类型]");
         processorsList = new JTable(processorsListModel);
         processorsList.getColumnModel().getColumn(0).setMinWidth(20);
         processorsList.getColumnModel().getColumn(0).setMaxWidth(20);
@@ -693,9 +696,9 @@ public class FlightPlot {
 
     private void createMenuBar() {
         // File menu
-        JMenu fileMenu = new JMenu("File");
+        JMenu fileMenu = new JMenu("功能");
 
-        JMenuItem fileOpenItem = new JMenuItem("Open Log...");
+        JMenuItem fileOpenItem = new JMenuItem("打开日志");
         fileOpenItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -704,7 +707,7 @@ public class FlightPlot {
         });
         fileMenu.add(fileOpenItem);
 
-        JMenuItem importPresetItem = new JMenuItem("Import Preset...");
+        JMenuItem importPresetItem = new JMenuItem("导入预设");
         importPresetItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -713,7 +716,7 @@ public class FlightPlot {
         });
         fileMenu.add(importPresetItem);
 
-        JMenuItem exportPresetItem = new JMenuItem("Export Preset...");
+        JMenuItem exportPresetItem = new JMenuItem("导出预设");
         exportPresetItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -722,7 +725,7 @@ public class FlightPlot {
         });
         fileMenu.add(exportPresetItem);
 
-        autosavePresets = new JCheckBoxMenuItem("Autosave Presets");
+        autosavePresets = new JCheckBoxMenuItem("自动保存预设");
         autosavePresets.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -731,7 +734,7 @@ public class FlightPlot {
         });
         fileMenu.add(autosavePresets);
 
-        JMenuItem exportAsImageItem = new JMenuItem("Export As Image...");
+        JMenuItem exportAsImageItem = new JMenuItem("导出图像");
         exportAsImageItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -740,7 +743,7 @@ public class FlightPlot {
         });
         fileMenu.add(exportAsImageItem);
 
-        JMenuItem exportTrackItem = new JMenuItem("Export Track...");
+        JMenuItem exportTrackItem = new JMenuItem("导出轨迹");
         exportTrackItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -749,7 +752,7 @@ public class FlightPlot {
         });
         fileMenu.add(exportTrackItem);
 
-        JMenuItem exportParametersItem = new JMenuItem("Export Parameters...");
+        JMenuItem exportParametersItem = new JMenuItem("导出参数");
         exportParametersItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -760,7 +763,7 @@ public class FlightPlot {
 
         if (!OSValidator.isMac()) {
             fileMenu.add(new JPopupMenu.Separator());
-            JMenuItem exitItem = new JMenuItem("Exit");
+            JMenuItem exitItem = new JMenuItem("退出");
             exitItem.setAccelerator(KeyStroke.getKeyStroke('Q', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
             exitItem.addActionListener(new ActionListener() {
                 @Override
@@ -771,12 +774,28 @@ public class FlightPlot {
             fileMenu.add(exitItem);
         }
 
+
+        JMenu testMenu = new JMenu("帮助");
+        helpItems = new JRadioButtonMenuItem[2];
+        helpItems[help1] = new JRadioButtonMenuItem("有问题联系15388646168");
+        helpItems[help2] = new JRadioButtonMenuItem("谢谢使用");
+        ButtonGroup helpgroup = new ButtonGroup();
+        for (JRadioButtonMenuItem item : helpItems) {
+            helpgroup.add(item);
+            item.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                   //do nothing
+                }
+            });
+            testMenu.add(item);
+        }
         // View menu
-        JMenu viewMenu = new JMenu("View");
+        JMenu viewMenu = new JMenu("显示设置");
         timeModeItems = new JRadioButtonMenuItem[3];
-        timeModeItems[TIME_MODE_LOG_START] = new JRadioButtonMenuItem("Log Start Time");
-        timeModeItems[TIME_MODE_BOOT] = new JRadioButtonMenuItem("Boot Time");
-        timeModeItems[TIME_MODE_GPS] = new JRadioButtonMenuItem("GPS Time");
+        timeModeItems[TIME_MODE_LOG_START] = new JRadioButtonMenuItem("日志开始时间");
+        timeModeItems[TIME_MODE_BOOT] = new JRadioButtonMenuItem("启动时间");
+        timeModeItems[TIME_MODE_GPS] = new JRadioButtonMenuItem("GPS时间");
         ButtonGroup timeModeGroup = new ButtonGroup();
         for (JRadioButtonMenuItem item : timeModeItems) {
             timeModeGroup.add(item);
@@ -794,6 +813,7 @@ public class FlightPlot {
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         menuBar.add(viewMenu);
+        menuBar.add(testMenu);
         mainFrame.setJMenuBar(menuBar);
     }
 

@@ -184,7 +184,7 @@ public class MAVLinkLogReader implements LogReader {
     @Override
     public long readUpdate(Map<String, Object> update) throws IOException, FormatErrorException {
         MAVLinkMessage msg = stream.read();
-        if (msg == null) {
+        if (msg == null) {//读取的方式基本都是一样的
             throw new EOFException();
         }
         for (MAVLinkField field : msg.definition.fields) {
