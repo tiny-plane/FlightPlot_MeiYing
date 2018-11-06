@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="me.drton.flightplot.FlightPlot">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="0">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="836" height="603"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <splitpane id="7f622">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="800" height="600"/>
+          </grid>
+        </constraints>
+        <properties>
+          <dividerLocation value="300"/>
+          <enabled value="true"/>
+        </properties>
+        <border type="empty"/>
+        <children>
+          <grid id="2281f" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <splitpane position="left"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <splitpane id="9fa07">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="200" height="200"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <dividerLocation value="230"/>
+                  <orientation value="0"/>
+                </properties>
+                <border type="empty"/>
+                <children>
+                  <grid id="f669a" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="3" left="3" bottom="3" right="3"/>
+                    <constraints>
+                      <splitpane position="left"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none" title="绘图"/>
+                    <children>
+                      <scrollpane id="c6f12">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="line"/>
+                        <children>
+                          <component id="80676" class="javax.swing.JTable" binding="processorsList" custom-create="true">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
+                      <grid id="97789" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="0" vgap="-1">
+                        <margin top="0" left="0" bottom="0" right="0"/>
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="9823" class="javax.swing.JButton" binding="addProcessorButton">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="添加"/>
+                            </properties>
+                          </component>
+                          <component id="15286" class="javax.swing.JButton" binding="removeProcessorButton">
+                            <constraints>
+                              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <text value="删除"/>
+                            </properties>
+                          </component>
+                        </children>
+                      </grid>
+                    </children>
+                  </grid>
+                  <splitpane id="2321e">
+                    <constraints>
+                      <splitpane position="right"/>
+                    </constraints>
+                    <properties>
+                      <dividerLocation value="231"/>
+                      <orientation value="0"/>
+                    </properties>
+                    <border type="empty"/>
+                    <children>
+                      <grid id="2c58e" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="3" left="3" bottom="3" right="3"/>
+                        <constraints>
+                          <splitpane position="left"/>
+                        </constraints>
+                        <properties/>
+                        <border type="etched" title="参数"/>
+                        <children>
+                          <scrollpane id="4daaf">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties/>
+                            <border type="line"/>
+                            <children>
+                              <component id="3152f" class="javax.swing.JTable" binding="parametersTable" custom-create="true">
+                                <constraints/>
+                                <properties/>
+                              </component>
+                            </children>
+                          </scrollpane>
+                        </children>
+                      </grid>
+                      <grid id="1679c" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                        <margin top="3" left="3" bottom="3" right="3"/>
+                        <constraints>
+                          <splitpane position="right"/>
+                        </constraints>
+                        <properties/>
+                        <border type="etched" title="日志信息"/>
+                        <children>
+                          <scrollpane id="c2aa4">
+                            <constraints>
+                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                            </constraints>
+                            <properties>
+                              <horizontalScrollBarPolicy value="32"/>
+                              <verticalScrollBarPolicy value="20"/>
+                            </properties>
+                            <border type="line"/>
+                            <children>
+                              <component id="6f812" class="javax.swing.JTable" binding="logTable" custom-create="true">
+                                <constraints/>
+                                <properties/>
+                              </component>
+                            </children>
+                          </scrollpane>
+                        </children>
+                      </grid>
+                    </children>
+                  </splitpane>
+                </children>
+              </splitpane>
+            </children>
+          </grid>
+          <grid id="92b86" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <splitpane position="right"/>
+            </constraints>
+            <properties/>
+            <border type="bevel-lowered"/>
+            <children>
+              <component id="ea31e" class="org.jfree.chart.ChartPanel" binding="chartPanel" custom-create="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </splitpane>
+      <grid id="4748" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="3" left="3" bottom="3" right="3"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="2" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="10"/>
+          </grid>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="3d4f6" class="javax.swing.JLabel" binding="statusLabel">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="欢迎使用 FlightPlot 魅影版  Powered by Di Weicheng and Wang Jiachen"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <toolbar id="c7f73">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <floatable value="false"/>
+          <rollover value="false"/>
+        </properties>
+        <clientProperties>
+          <JToolBar.isRollover class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+        <border type="none"/>
+        <children>
+          <component id="149b9" class="javax.swing.JButton" binding="openLogButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <minimumSize width="65" height="24"/>
+              <preferredSize width="100" height="24"/>
+              <text value="打开日志"/>
+            </properties>
+          </component>
+          <component id="85547" class="javax.swing.JButton" binding="fieldsListButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <minimumSize width="65" height="24"/>
+              <preferredSize width="100" height="24"/>
+              <text value="参数列表"/>
+            </properties>
+          </component>
+          <component id="98cb0" class="javax.swing.JButton" binding="logInfoButton">
+            <constraints/>
+            <properties>
+              <minimumSize width="65" height="24"/>
+              <preferredSize width="100" height="24"/>
+              <text value="日志信息"/>
+            </properties>
+          </component>
+          <component id="b62f4" class="javax.swing.JCheckBox" binding="markerCheckBox">
+            <constraints/>
+            <properties>
+              <minimumSize width="82" height="28"/>
+              <preferredSize width="90" height="28"/>
+              <text value="描点"/>
+            </properties>
+          </component>
+          <component id="d93f2" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <labelFor value="d45fb"/>
+              <minimumSize width="46" height="28"/>
+              <preferredSize width="70" height="28"/>
+              <text value="预设："/>
+            </properties>
+          </component>
+          <component id="d45fb" class="javax.swing.JComboBox" binding="presetComboBox" default-binding="true">
+            <constraints/>
+            <properties>
+              <editable value="true"/>
+              <maximumSize width="32767" height="28"/>
+              <toolTipText value="Type preset name and press [Enter] to save current plots as preset"/>
+            </properties>
+          </component>
+          <component id="26fff" class="javax.swing.JButton" binding="savePresetButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <minimumSize width="73" height="24"/>
+              <text value="保存预设"/>
+            </properties>
+          </component>
+          <component id="2506a" class="javax.swing.JButton" binding="deletePresetButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <minimumSize width="81" height="24"/>
+              <preferredSize width="110" height="24"/>
+              <text value="删除预设"/>
+            </properties>
+          </component>
+          <hspacer id="8ba9">
+            <constraints/>
+          </hspacer>
+        </children>
+      </toolbar>
+    </children>
+  </grid>
+</form>
