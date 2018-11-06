@@ -616,7 +616,7 @@ public class FlightPlot {
                 setRange(getDefaultAutoRange());
             }
         };
-        domainAxisDate.setTimeZone(TimeZone.getTimeZone("格林尼治时间"));
+        domainAxisDate.setTimeZone(TimeZone.getTimeZone("GMT"));
         domainAxisDate.setLowerMargin(0.0);
         domainAxisDate.setUpperMargin(0.0);
 

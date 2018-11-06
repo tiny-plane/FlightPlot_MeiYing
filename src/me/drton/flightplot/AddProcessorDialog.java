@@ -22,7 +22,7 @@ public class AddProcessorDialog extends JDialog {
         //this.processorTypes = processorTypes;
         setContentPane(contentPane);
         setModal(true);
-        setTitle("Add Processor");
+        setTitle("添加待处理数据");
         getRootPane().setDefaultButton(buttonOK);
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
