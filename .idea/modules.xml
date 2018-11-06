@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FlightPlot_MeiYing.iml" filepath="$PROJECT_DIR$/FlightPlot_MeiYing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jMAVlib/jMAVlib.iml" filepath="$PROJECT_DIR$/jMAVlib/jMAVlib.iml" />
+    </modules>
+  </component>
+</project>
