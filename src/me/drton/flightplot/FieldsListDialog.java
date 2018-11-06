@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.sound.midi.SysexMessage;
+//import javax.sound.midi.SysexMessage;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
-
+//import
 // 这个是构造参数列表的类
 public class FieldsListDialog extends JDialog { //生成UI对象
     private JPanel contentPane;
@@ -52,8 +52,8 @@ public class FieldsListDialog extends JDialog { //生成UI对象
         button_nouse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //System.out.println("123");
-                onClose();
+             //   System.out.println("  ");
+                //onClose();
             }
         });
         buttonClose.addActionListener(new ActionListener() {//设置关闭，运行等回调函数
@@ -78,7 +78,7 @@ public class FieldsListDialog extends JDialog { //生成UI对象
 
         fieldsTable.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                if (me.getClickCount() == 2) {
+                if (me.getClickCount() == 2) {//双击也是添加的意思
                     callbackAdd.run();
                 }
             }
@@ -139,8 +139,9 @@ public class FieldsListDialog extends JDialog { //生成UI对象
                 return false;
             }
         };
-        fieldsTableModel.addColumn("Field");
-        fieldsTableModel.addColumn("Type");
+        fieldsTableModel.addColumn("参数");
+        fieldsTableModel.addColumn("数据类型");
+        fieldsTableModel.addColumn("数据量");
         fieldsTable = new JTable(fieldsTableModel);
         sorter = new TableRowSorter<DefaultTableModel>(fieldsTableModel);
         fieldsTable.setRowSorter(sorter);

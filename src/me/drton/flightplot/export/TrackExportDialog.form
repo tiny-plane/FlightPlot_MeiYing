@@ -34,7 +34,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Close"/>
+                  <text value="关闭"/>
                 </properties>
               </component>
               <component id="e7465" class="javax.swing.JButton" binding="buttonExport">
@@ -42,7 +42,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Export"/>
+                  <text value="导出"/>
                 </properties>
               </component>
             </children>
@@ -63,7 +63,7 @@
             </constraints>
             <properties>
               <labelFor value="27428"/>
-              <text value="Export format"/>
+              <text value="导出格式"/>
             </properties>
           </component>
           <component id="27428" class="javax.swing.JComboBox" binding="exportFormatComboBox">
@@ -77,7 +77,7 @@
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Samples per second"/>
+              <text value="每秒采样数"/>
             </properties>
           </component>
           <component id="872f6" class="javax.swing.JSlider" binding="samplesPerSecond">
@@ -101,7 +101,7 @@
               <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Split track by flight mode"/>
+              <text value="按飞行模式分割"/>
             </properties>
           </component>
           <component id="cfd64" class="javax.swing.JSeparator">
@@ -118,7 +118,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="max"/>
+              <text value="最大"/>
             </properties>
           </component>
           <component id="770d0" class="javax.swing.JSeparator">
@@ -135,7 +135,7 @@
             </constraints>
             <properties>
               <labelFor value="27b53"/>
-              <text value="Export from"/>
+              <text value="起始时间"/>
             </properties>
           </component>
           <component id="478c2" class="javax.swing.JLabel">
@@ -144,7 +144,7 @@
             </constraints>
             <properties>
               <labelFor value="cf68c"/>
-              <text value="... to"/>
+              <text value="结束时间"/>
             </properties>
           </component>
           <component id="27b53" class="javax.swing.JTextField" binding="timeStartField">
@@ -179,7 +179,7 @@
             </constraints>
             <properties>
               <selected value="false"/>
-              <text value="Only export data visible in chart"/>
+              <text value="只导出图表中的数据"/>
             </properties>
           </component>
           <component id="97c83" class="javax.swing.JLabel">
@@ -187,7 +187,7 @@
               <grid row="4" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Export range in seconds:"/>
+              <text value="导出时间范围："/>
             </properties>
           </component>
           <component id="3573" class="javax.swing.JLabel" binding="timeStartLabel">
@@ -216,7 +216,7 @@
             </constraints>
             <properties>
               <labelFor value="41451"/>
-              <text value="Altitude Offset"/>
+              <text value="高度偏移"/>
             </properties>
           </component>
           <component id="41451" class="javax.swing.JTextField" binding="altOffsetField">

@@ -1,5 +1,5 @@
 package me.drton.jmavlib.log;
-
+//这是读取mavlink的日志代码
 import me.drton.jmavlib.mavlink.*;
 
 import java.io.EOFException;
@@ -31,7 +31,7 @@ public class MAVLinkLogReader implements LogReader {
             }
         }
 
-        file = new RandomAccessFile(fileName, "r");
+        file = new RandomAccessFile(fileName, "r");//文件指针
         stream = new MAVLinkStream(schema, file.getChannel());
         updateInfo();
     }

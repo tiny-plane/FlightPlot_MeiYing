@@ -28,7 +28,7 @@ public class ULogTrackReader extends AbstractTrackReader {
     public TrackPoint readNextPoint() throws IOException, FormatErrorException {
         Map<String, Object> data = new HashMap<String, Object>();
         while (true) {
-            data.clear();
+            data.clear();//先连续的读，知道完全读完，然后从data里面获取飞行模式的信息
             long t;
             try {
                 t = readUpdate(data);
@@ -50,7 +50,7 @@ public class ULogTrackReader extends AbstractTrackReader {
         }
         return null;
     }
-
+//飞行模式有以下几个支持的情况
     private String getFlightMode(Map<String, Object> data) {
         Number flightMode = (Number) data.get(MODE);
         if (flightMode != null) {
