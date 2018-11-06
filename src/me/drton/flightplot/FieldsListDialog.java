@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -26,19 +27,21 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.DocumentEvent;
 
-public class FieldsListDialog extends JDialog {
+// 这个是构造参数列表的类
+public class FieldsListDialog extends JDialog { //生成UI对象
     private JPanel contentPane;
     private JButton buttonAdd;
     private JTable fieldsTable;
     private JButton buttonClose;
     private JTextField textSearch;
+    private JButton button_nouse;
     private DefaultTableModel fieldsTableModel;
     private TableRowSorter sorter;
 
-    public FieldsListDialog(final Runnable callbackAdd) {
+    public FieldsListDialog(final Runnable callbackAdd) {//设置基本参数
         setContentPane(contentPane);
         setModal(false);
-        setTitle("Fields List");
+        setTitle("参数列表");
         getRootPane().setDefaultButton(buttonAdd);
         buttonAdd.addActionListener(new ActionListener() {
             @Override
@@ -46,7 +49,14 @@ public class FieldsListDialog extends JDialog {
                 callbackAdd.run();
             }
         });
-        buttonClose.addActionListener(new ActionListener() {
+        button_nouse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //System.out.println("123");
+                onClose();
+            }
+        });
+        buttonClose.addActionListener(new ActionListener() {//设置关闭，运行等回调函数
             public void actionPerformed(ActionEvent e) {
                 onClose();
             }
@@ -59,6 +69,7 @@ public class FieldsListDialog extends JDialog {
             }
         });
         // call onClose() on ESCAPE
+        /**接下来为这个对话框 注册键盘和鼠标操作*/
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onClose();
@@ -85,7 +96,7 @@ public class FieldsListDialog extends JDialog {
         });
     }
 
-    private void onClose() {
+    private void onClose() {//设置关闭函数，就是使其看不见？。。。。。前面已经把这个函数注册给关闭等了
         setVisible(false);
     }
 
@@ -97,12 +108,12 @@ public class FieldsListDialog extends JDialog {
     }
 
     public void setFieldsList(Map<String, String> fields) {
-        while (fieldsTableModel.getRowCount() > 0) {
+        while (fieldsTableModel.getRowCount() > 0) {//删除所有行
             fieldsTableModel.removeRow(0);
         }
         List<String> fieldsList = new ArrayList<String>(fields.keySet());
         Collections.sort(fieldsList);
-        for (String field : fieldsList) {
+        for (String field : fieldsList) {//生成所有行，等于每次都刷新一下
             fieldsTableModel.addRow(new Object[]{field, fields.get(field)});
         }
     }
