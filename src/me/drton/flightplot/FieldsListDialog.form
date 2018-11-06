@@ -51,7 +51,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Add"/>
+                  <text value="添加"/>
                 </properties>
               </component>
               <component id="5723f" class="javax.swing.JButton" binding="buttonClose">
@@ -59,7 +59,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Close"/>
+                  <text value="关闭"/>
                 </properties>
               </component>
             </children>
@@ -79,7 +79,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Search:"/>
+              <text value="查找"/>
             </properties>
           </component>
           <component id="c6236" class="javax.swing.JTextField" binding="textSearch">
