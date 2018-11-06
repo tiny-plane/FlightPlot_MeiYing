@@ -3,13 +3,13 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/AppleJavaExtensions.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/forms_rt.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/jdom.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/asm4-all.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/jcommon-1.0.17.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.0.14.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/vecmath.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javac2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/asm4-all.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/jarbundler-2.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.0.14.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jdom.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/vecmath.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jcommon-1.0.17.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/annotations.jar!/" />
     </CLASSES>
     <JAVADOC />
