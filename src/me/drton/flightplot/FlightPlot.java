@@ -135,7 +135,7 @@ public class FlightPlot {
     private boolean alreadysaveonce = false;
     private boolean canbesave = false;
     private map2file Object_map2file = new map2file();
-    private File matlabfile;
+    private File matlabfile = null;
     private Map<String, String>  data;
 
     public FlightPlot() {
@@ -226,6 +226,20 @@ public class FlightPlot {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showOpenLogDialog();
+            }
+        });
+        deletematlab.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+    if (matlabfile != null) {
+
+
+    if (matlabfile.exists()) {
+        matlabfile.delete();
+        alreadysaveonce = false;
+    }
+
+}
             }
         });
         fieldsListButton.addActionListener(new ActionListener() {
@@ -319,6 +333,12 @@ public class FlightPlot {
                 onPresetAction(e);
             }
         });
+        /**
+         *
+         *
+         *
+         *
+         */
         matlab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -328,6 +348,12 @@ public class FlightPlot {
                 }
             }
         });
+        /**
+         *
+         *
+         *
+         *
+         */
         savePresetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
