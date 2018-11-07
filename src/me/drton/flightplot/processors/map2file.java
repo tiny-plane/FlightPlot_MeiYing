@@ -11,7 +11,7 @@ import java.io.FileReader;
 
 public class map2file {
 
-    public File mapTofile(Map<String, String> map){
+    public File mapTofile(Map<String, Object> map){
         File file = new File("D:" + File.separator + "FlightPlot_out.m");
         try {
             writer(map, file);
@@ -21,7 +21,7 @@ public class map2file {
         return file;
     }
 
-    private File writer(Map<String, String> map, File file) throws IOException{
+    private File writer(Map<String, Object> map, File file) throws IOException{
         StringBuffer buffer = new StringBuffer();
         FileWriter writer = new FileWriter(file, false);
         BufferedWriter nl = new BufferedWriter(writer);

@@ -136,7 +136,7 @@ public class FlightPlot {
     private boolean canbesave = false;
     private map2file Object_map2file = new map2file();
     private File matlabfile = null;
-    private Map<String, String>  data;
+    private Map<String, Object>  data;
 
     public FlightPlot() {
         Map<String, TrackExporter> exporters = new LinkedHashMap<String, TrackExporter>();
@@ -1251,7 +1251,7 @@ public class FlightPlot {
             }
             chart.getXYPlot().clearDomainMarkers();
 
-            if (logReader instanceof ULogReader) {
+            if (logReader instanceof ULogReader) {//如果是这类型
                 Map<String, List<ULogReader.ParamUpdate>> updateMap = ((ULogReader) logReader).parameterUpdates;
                 for (List<ULogReader.ParamUpdate> updList: updateMap.values()) {
                     for (ULogReader.ParamUpdate upd: updList) {
@@ -1276,6 +1276,7 @@ public class FlightPlot {
                 String processorTitle = activeProcessors.get(i).getTitle();
                 Map<String, Integer> processorSeriesIndex = new HashMap<String, Integer>();
                 seriesIndex.add(processorSeriesIndex);
+                //System.out.println(processorSeriesIndex.toString());
                 for (PlotItem item : processor.getSeriesList()) {
                     if (item instanceof Series) {
                         Series series = (Series) item;
