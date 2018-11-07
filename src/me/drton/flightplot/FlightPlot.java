@@ -659,8 +659,8 @@ public class FlightPlot {
         processorsListModel.addColumn("显示");
         processorsListModel.addColumn("参数名[数据处理类型]");
         processorsList = new JTable(processorsListModel);
-        processorsList.getColumnModel().getColumn(0).setMinWidth(20);
-        processorsList.getColumnModel().getColumn(0).setMaxWidth(20);
+        processorsList.getColumnModel().getColumn(0).setMinWidth(60);
+        processorsList.getColumnModel().getColumn(0).setMaxWidth(60);
         // Parameters table
         parametersTableModel = new DefaultTableModel() {
             @Override
@@ -668,8 +668,8 @@ public class FlightPlot {
                 return col == 1;
             }
         };
-        parametersTableModel.addColumn("Parameter");
-        parametersTableModel.addColumn("Value");
+        parametersTableModel.addColumn("参数");
+        parametersTableModel.addColumn("数值");
         parametersTable = new JTable(parametersTableModel);
         parametersTable.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "startEditing");
         parametersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -684,9 +684,9 @@ public class FlightPlot {
                 return false;
             }
         };
-        logsTableModel.addColumn("Time");
-        logsTableModel.addColumn("Level");
-        logsTableModel.addColumn("Message");
+        logsTableModel.addColumn("时间");
+        logsTableModel.addColumn("级别");
+        logsTableModel.addColumn("信息内容");
         logTable = new JTable(logsTableModel);
         logTable.getColumnModel().getColumn(2).setMinWidth(350);
         logTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

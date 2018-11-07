@@ -66,7 +66,7 @@ public class AddProcessorDialog extends JDialog {
             for (String processorType : processorTypes) {
                 processorTypesListModel.addElement(processorType);
             }
-            processorTypesList.setSelectedValue("Simple", true);
+            processorTypesList.setSelectedValue("Simple", true);//默认是选择simple的
         }
         this.callback = callback;
         if (processorPreset != null) {

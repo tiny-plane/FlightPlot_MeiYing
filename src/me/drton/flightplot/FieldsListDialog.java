@@ -52,10 +52,22 @@ public class FieldsListDialog extends JDialog { //生成UI对象
         button_nouse.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               System.out.println("helloworld");
+               //System.out.println("helloworld");
                 //onClose();
-                Filecontrol file_control = new Filecontrol();
-                file_control.Filecontrol();
+               // Filecontrol file_control = new Filecontrol();
+                //file_control.Filecontrol();
+                Filewriter filewriter = new Filewriter();
+                StringBuilder filenameraw = new StringBuilder();
+                filenameraw.append(String.valueOf(123));
+
+                filenameraw.append(".txt");
+
+                String filename = new String(filenameraw.toString());
+                String content = new String(getSelectedFields().toString());
+//System.out.println(filename);
+//System.out.println(content);
+                filewriter.filewrite(filename,content);
+
             }
         });
         buttonClose.addActionListener(new ActionListener() {//设置关闭，运行等回调函数
