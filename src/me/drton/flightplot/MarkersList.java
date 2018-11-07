@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by ton on 29.09.15.
  */
-public class MarkersList extends ArrayList<Marker> implements PlotItem {
+public class MarkersList extends ArrayList<Marker> implements PlotItem {//画点
     private final String title;
 
     public MarkersList(String title) {
@@ -15,7 +15,7 @@ public class MarkersList extends ArrayList<Marker> implements PlotItem {
     }
 
     @Override
-    public String getTitle() {
+    public String getTitle() {//获取标题
         return title;
     }
 
@@ -23,7 +23,7 @@ public class MarkersList extends ArrayList<Marker> implements PlotItem {
         return processorTitle + (title.isEmpty() ? "" : (":" + title));
     }
 
-    public void addMarker(double time, String label) {
-        add(new Marker(time, label));
+    public void addMarker(double time, String label) {//加点，需要时间和标签
+        add(new Marker(time, label));//就是一些坐标
     }
 }

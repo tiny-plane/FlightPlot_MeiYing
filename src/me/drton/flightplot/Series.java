@@ -25,7 +25,7 @@ public class Series extends ArrayList<XYPoint> implements PlotItem {
         return processorTitle + (title.isEmpty() ? "" : (":" + title));
     }
 
-    public void addPoint(double time, double value) {
+    public void addPoint(double time, double value) {//添加作图的时候的数据点
         if (lastTime != null && time - lastTime < skipOut) {
             lastValue = value;
             return;

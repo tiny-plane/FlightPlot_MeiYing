@@ -35,7 +35,7 @@ public class Simple extends PlotProcessor {
         lowPassFilters = new LowPassFilter[param_Fields.length];
         for (int i = 0; i < param_Fields.length; i++) {
             LowPassFilter lowPassFilter = new LowPassFilter();
-            lowPassFilter.setF((Double) parameters.get("LPF"));
+            lowPassFilter.setF((Double) parameters.get("LPF"));//传入时间
             lowPassFilters[i] = lowPassFilter;
         }
         for (String field : param_Fields) {
@@ -56,6 +56,7 @@ public class Simple extends PlotProcessor {
         for (int i = 0; i < param_Fields.length; i++) {
             String field = param_Fields[i];
             Object v = update.get(field);
+           // System.out.println(v.toString());
             if (v != null && v instanceof Number) {
                 double out = preProcessValue(i, time, ((Number) v).doubleValue());
                 if (Double.isNaN(out)) {

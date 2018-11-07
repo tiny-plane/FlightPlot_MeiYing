@@ -185,6 +185,8 @@ public class FlightPlot {
                     }
                     fieldsValue.append(field);
                 }
+                /***/
+               // System.out.println(fieldsValue.toString());
                 PlotProcessor processor = new Simple();
                 processor.setParameters(Collections.<String, Object>singletonMap("Fields", fieldsValue.toString()));
                 ProcessorPreset pp = new ProcessorPreset(processorTitle, processor.getProcessorType(),

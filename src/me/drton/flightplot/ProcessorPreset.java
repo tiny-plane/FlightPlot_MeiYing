@@ -9,6 +9,7 @@ import java.util.*;
 /**
  * User: ton Date: 22.06.13 Time: 15:08
  */
+//看懂这个类很重要，这个相当于是每一个数据处理的设置部分，同时也会传参，到这一步的时候，数据都已经读取好了并且一个个分类在对应的变量里了。
 public class ProcessorPreset {
     private String title;
     private String processorType;
@@ -16,21 +17,24 @@ public class ProcessorPreset {
     private Map<String, Color> colors;
     private boolean visible;
 
-    public ProcessorPreset(String title, String processorType, Map<String, Object> parameters, Map<String, Color> colors, boolean visible) {
+    public ProcessorPreset(String title, String processorType, Map<String, Object> parameters, Map<String, Color> colors, boolean visible) {//标准的构造函数
         this.title = title;
         this.processorType = processorType;
-        this.parameters = parameters;
+        this.parameters = parameters;//保存了参数名，LPF，比例，延迟，偏移
+        //System.out.println(parameters.toString());
         this.colors = colors;
         this.visible = visible;
     }
 
     public static ProcessorPreset unpackJSONObject(JSONObject json) throws IOException {
         JSONObject jsonParameters = json.getJSONObject("Parameters");
+        System.out.println(jsonParameters.toString());
         Map<String, Object> parametersNew = new HashMap<String, Object>();
         for (Object key : jsonParameters.keySet()) {
             String keyStr = (String) key;
             parametersNew.put(keyStr, jsonParameters.get(keyStr).toString());
         }
+        System.out.println(parametersNew.toString());
         JSONObject jsonColors = json.getJSONObject("Colors");
         Map<String, Color> colorsNew = new HashMap<String, Color>();
         for (Object key : jsonColors.keySet()) {

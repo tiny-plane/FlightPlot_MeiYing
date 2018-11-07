@@ -61,7 +61,8 @@ public class AddProcessorDialog extends JDialog {
         return (String) processorTypesList.getSelectedValue();
     }
 
-    public void display(Runnable callback, ProcessorPreset processorPreset) {
+    public void display(Runnable callback, ProcessorPreset processorPreset) {//从fieldlist里面弄没用，那个地方只能传递出选择的field的名字，这里才开始处理
+        // runnable是用于生成新的线程的接口类，里面只有一种方法，就是运行，run,调用这个方法就可以生成一个新的线程。
         if (processorTypesListModel.size() == 0) {
             for (String processorType : processorTypes) {
                 processorTypesListModel.addElement(processorType);
