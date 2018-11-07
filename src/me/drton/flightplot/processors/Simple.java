@@ -51,17 +51,19 @@ public class Simple extends PlotProcessor {
         return in;
     }
 
+
     @Override
-    public void process(double time, Map<String, Object> update) {
+    public void process(double time, Map<String, Object> update) {//这是吧所有设置为simple的都更新一下，如果使用滚轮，实际上就是改变了比例，如果拖拽就是改变了偏移，这样刷新一次需要很多时间
+
         for (int i = 0; i < param_Fields.length; i++) {
             String field = param_Fields[i];
             Object v = update.get(field);
            // System.out.println(v.toString());
             if (v != null && v instanceof Number) {
                 double out = preProcessValue(i, time, ((Number) v).doubleValue());
-                if (Double.isNaN(out)) {
+                if (Double.isNaN(out)) {//如果是第一个点，就不需要低通滤波，直接添加
                     addPoint(i, time, Double.NaN);
-                } else {
+                } else {//之后的点都进过一下低通滤波再画出来
                     out = lowPassFilters[i].getOutput(time, out);
                     out = postProcessValue(i, time, out);
                     addPoint(i, time + param_Delay, out * param_Scale + param_Offset);

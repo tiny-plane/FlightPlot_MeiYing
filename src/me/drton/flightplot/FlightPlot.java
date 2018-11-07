@@ -7,6 +7,7 @@ import me.drton.flightplot.export.TrackExporter;
 import me.drton.flightplot.processors.PlotProcessor;
 import me.drton.flightplot.processors.ProcessorsList;
 import me.drton.flightplot.processors.Simple;
+import me.drton.flightplot.processors.map2file;
 import me.drton.jmavlib.log.FormatErrorException;
 import me.drton.jmavlib.log.LogReader;
 import me.drton.jmavlib.log.px4.PX4LogReader;
@@ -101,6 +102,8 @@ public class FlightPlot {
     private JButton logInfoButton;
     private JCheckBox markerCheckBox;
     private JButton savePresetButton;
+    private JButton matlab;
+    private JButton deletematlab;
     private JCheckBoxMenuItem autosavePresets;
     private JRadioButtonMenuItem[] timeModeItems;
     private JRadioButtonMenuItem[] helpItems;
@@ -129,6 +132,11 @@ public class FlightPlot {
     private List<ProcessorPreset> activeProcessors = new ArrayList<ProcessorPreset>();
     private Range lastTimeRange = null;
     private String currentPreset = null;
+    private boolean alreadysaveonce = false;
+    private boolean canbesave = false;
+    private map2file Object_map2file = new map2file();
+    private File matlabfile;
+    private Map<String, String>  data;
 
     public FlightPlot() {
         Map<String, TrackExporter> exporters = new LinkedHashMap<String, TrackExporter>();
@@ -309,6 +317,15 @@ public class FlightPlot {
             @Override
             public void actionPerformed(ActionEvent e) {
                 onPresetAction(e);
+            }
+        });
+        matlab.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (canbesave && !alreadysaveonce){
+                    matlabfile = Object_map2file.mapTofile(data);
+                    alreadysaveonce = true;
+                }
             }
         });
         savePresetButton.addActionListener(new ActionListener() {
@@ -1153,38 +1170,41 @@ public class FlightPlot {
         return processors;
     }
 
-    private void generateSeries() throws IOException, FormatErrorException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    private void generateSeries() throws IOException, FormatErrorException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {//这个是画所有的曲线
         activeProcessors.clear();
         activeProcessors.addAll(getActiveProcessors());
 
         dataset.removeAllSeries();
         seriesIndex.clear();
         PlotProcessor[] processors = new PlotProcessor[activeProcessors.size()];
-
+//先清除，初始化一圈
         // Update time offset according to selected time mode
-        long timeOffset = getTimeOffset(timeMode);
+        long timeOffset = getTimeOffset(timeMode);//查看时间偏移选项
 
         // Displayed log range in seconds of native log time
-        Range range = getLogRange(timeMode);
+        Range range = getLogRange(timeMode);//查看载入的时间范围
 
         // Process some extra data in hidden areas
         long timeStart = (long) ((range.getLowerBound() - range.getLength()) * 1e6);
         long timeStop = (long) ((range.getUpperBound() + range.getLength()) * 1e6);
         timeStart = Math.max(logReader.getStartMicroseconds(), timeStart);
         timeStop = Math.min(logReader.getStartMicroseconds() + logReader.getSizeMicroseconds(), timeStop);
-
+//获得起止时间
         double timeScale = (selectDomainAxis(timeMode) == domainAxisDate) ? 1000.0 : 1.0;
-
-        int displayPixels = 2000;
+//获得时间比例
+        int displayPixels = 2000;//显示像素值，与画图有关
         double skip = range.getLength() / displayPixels;
-        if (processors.length > 0) {
-            for (int i = 0; i < activeProcessors.size(); i++) {
+
+        if (processors.length > 0) {//如果选择了项目
+            for (int i = 0; i < activeProcessors.size(); i++) {//激活了多少个就执行多少个
                 ProcessorPreset pp = activeProcessors.get(i);
                 PlotProcessor processor;
                 processor = processorsTypesList.getProcessorInstance(pp, skip, logReader.getFields());
                 processor.setFieldsList(logReader.getFields());
                 processors[i] = processor;
+
             }
+           //System.out.println(activeProcessors.size());//显示一下有多少个激活的
             logReader.seek(timeStart);
             logReader.clearErrors();
             Map<String, Object> data = new HashMap<String, Object>();

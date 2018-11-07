@@ -82,7 +82,7 @@ public abstract class PlotProcessor {
         return idx;
     }
 
-    protected int addSeries(String label) {
+    protected int addSeries(String label) {//加一个线，加一个空点
         int idx = seriesList.size();
         seriesList.add(new Series(label, skipOut));
         lastPoints.add(null);
