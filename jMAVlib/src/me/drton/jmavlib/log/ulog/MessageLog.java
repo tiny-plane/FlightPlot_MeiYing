@@ -37,6 +37,6 @@ public class MessageLog {
 
     @Override
     public String toString() {
-        return String.format("LOG: time=%s, level=%s, message=%s, value=%s", timestamp, getLevelStr(), message);
+        return String.format("LOG: time=%d, level=%s, message=%s", timestamp, getLevelStr(), message);
     }
 }

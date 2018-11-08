@@ -1,10 +1,6 @@
 package me.drton.jmavlib.log.ulog;
 //这个是ulog格式的阅读器
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
@@ -209,10 +205,7 @@ public class ULogReader extends BinaryLogReader {//定义报头
             }
             packetsNum++;
 //msg内部存储了所有参数数量长度等等内容格式等等，还有所有参数,以及记录的变量数据类型长度等等，可以写成一个文件看一下，他们为msg写了tostring方法，可以直接用
-            File desktopDir = FileSystemView.getFileSystemView().getHomeDirectory();
-            String desktopPath = desktopDir.getAbsolutePath();
-            //Filewriter filewriter = new Filewriter();
-           // filewriter.filewriter_in_spe_location(desktopPath,"Allinfo.txt",msg.toString());
+
 
             if (msg instanceof MessageFlagBits) {
                 MessageFlagBits msgFlags = (MessageFlagBits) msg;
@@ -519,7 +512,9 @@ public class ULogReader extends BinaryLogReader {//定义报头
                 errors.add(new FormatErrorException(pos, "Message size mismatch, parsed: " + sizeParsed + ", msg size: " + msgSize));
                 buffer.position(buffer.position() + msgSize - sizeParsed);
             }
-            System.out.println(msg.toString());
+           // System.out.println(msg.toString());
+            /********************************/
+
             return msg;//到这里读完
 
         }
@@ -573,6 +568,25 @@ public class ULogReader extends BinaryLogReader {//定义报头
                     last_p = tsec;
                     System.out.printf("%8.0f\n", tsec);
                 }
+/**
+                System.out.println("here");
+                File file = new File("D:" + File.separator + "FlightPlot_out.m");
+                StringBuffer buffer = new StringBuffer();
+                FileWriter writer = new FileWriter(file, false);
+                BufferedWriter nl = new BufferedWriter(writer);
+
+                for(Map.Entry entry:update.entrySet()){
+                                        String key = (String) entry.getKey();
+                                        System.out.println(key);
+                    String value = (String) entry.getValue();
+                    buffer.append(key + ":" + value);
+                    nl.newLine();
+                }
+                writer.write(buffer.toString());
+                writer.close();
+
+*/
+  
                 // keys in Map "update" are fieldnames beginning with the topic name e.g. SENSOR_GYRO_0.someField
                 // Create a printstream for each topic when it is first encountered
                 Set<String> keySet = update.keySet();

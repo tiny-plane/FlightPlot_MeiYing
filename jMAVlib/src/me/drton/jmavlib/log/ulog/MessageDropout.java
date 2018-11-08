@@ -14,6 +14,6 @@ public class MessageDropout {
 
     @Override
     public String toString() {
-        return String.format("MessageDropout: duration=%i", duration);
+        return String.format("MessageDropout: duration=%d", duration);
     }
 }
