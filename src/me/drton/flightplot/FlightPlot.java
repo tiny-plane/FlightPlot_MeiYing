@@ -933,27 +933,29 @@ public class FlightPlot {
         }
     }
 
-    private void openLog(String logFileName) {
-        String logFileNameLower = logFileName.toLowerCase();
-        LogReader logReaderNew;
-        logsTableModel.setRowCount(0);
+    private void openLog(String logFileName) {//打开日志
+        String logFileNameLower = logFileName.toLowerCase();//小写
+        //System.out.println(logFileNameLower);
+        //System.out.println(logFileName);
+        LogReader logReaderNew;//建立一个日志阅读器
+        logsTableModel.setRowCount(0);//表格模式，设置列数为0
         try {
             if (logFileNameLower.endsWith(".bin") || logFileNameLower.endsWith(".px4log")) {
-                logReaderNew = new PX4LogReader(logFileName);
+                logReaderNew = new PX4LogReader(logFileName);//判断文件类型，如果是ulg则建立一个ulog的阅读器
             } else if (logFileNameLower.endsWith(".ulg")) {
                 ULogReader ulogReader = new ULogReader(logFileName);
-                logReaderNew = ulogReader;
-                for (MessageLog loggedMsg : ulogReader.loggedMessages) {
-                    long t = loggedMsg.timestamp / 1000;
-                    String time = String.format("%2d:%02d:%03d", t / 1000 / 60, ((t / 1000) % 60), t % 1000);
-                    logsTableModel.addRow(new Object[] { time, loggedMsg.getLevelStr(),
-                            loggedMsg.message });
+                logReaderNew = ulogReader;//然后把之前那个普通的释放，换成ulog
+                for (MessageLog loggedMsg : ulogReader.loggedMessages) {//记录了多少个数据，就循环多少次
+                    long t = loggedMsg.timestamp / 1000;//单位是微秒，这样变成毫秒
+                    String time = String.format("%2d:%02d:%03d", t / 1000 / 60, ((t / 1000) % 60), t % 1000);//换算成小时制，在除1000变成秒
+                    logsTableModel.addRow(new Object[] { time, loggedMsg.getLevelStr(),//然后按照时间，把每一行添加进去
+                            loggedMsg.message });//存储顺序为，时间，信息级别，信息
                 }
-            } else {
+            } else {//否则提示，不支持的格式
                 setStatus("Log format not supported: " + logFileName);
                 return;
             }
-        } catch (Exception e) {
+        } catch (Exception e) {//出什么错就返回什么错误内容
             setStatus("Error: " + e);
             e.printStackTrace();
             return;

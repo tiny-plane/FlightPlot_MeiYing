@@ -6,6 +6,7 @@ public class Filewriter extends Filecontrol{
 
     String filename;
     String content;
+String location;
 
 public boolean filewrite(String filename,String content){
     try {
@@ -15,7 +16,50 @@ public boolean filewrite(String filename,String content){
     }
         return  true;
     }
+    public boolean filewriter_in_spe_location(String location ,String filename,String content){
+        try {
+            build_file_in_spe_location(location,filename, content);
+        } catch (IOException e){
+            return false;
+        }
+        return  true;
+    }
+public  boolean build_file_in_spe_location(String location, String file_name,String  content)throws IOException{
+    File file = new File(location + File.separator + file_name);
 
+    if (!file.exists()) {
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    } else {
+        try {
+            file.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    try {
+        Writer writer = null;
+        try{
+            writer = new FileWriter(file);
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+        this.writefile(writer,content);
+    } catch (Exception e){
+        e.printStackTrace();
+        return false;
+    }
+    return true;
+}
     @Override
     public boolean build_file(String file_name,String content) throws IOException {
         File file = new File("D:" + File.separator + file_name);

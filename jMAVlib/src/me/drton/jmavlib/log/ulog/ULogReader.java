@@ -1,13 +1,13 @@
 package me.drton.jmavlib.log.ulog;
-
+//这个是ulog格式的阅读器
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
-
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 
 import me.drton.jmavlib.log.BinaryLogReader;
 import me.drton.jmavlib.log.FormatErrorException;
@@ -15,7 +15,7 @@ import me.drton.jmavlib.log.FormatErrorException;
 /**
  * User: ton Date: 03.06.13 Time: 14:18
  */
-public class ULogReader extends BinaryLogReader {
+public class ULogReader extends BinaryLogReader {//定义报头
     static final byte MESSAGE_TYPE_FORMAT = (byte) 'F';
     static final byte MESSAGE_TYPE_DATA = (byte) 'D';
     static final byte MESSAGE_TYPE_INFO = (byte) 'I';
@@ -55,9 +55,9 @@ public class ULogReader extends BinaryLogReader {
     private long utcTimeReference = -1;
     private long logStartTimestamp = -1;
     private boolean nestedParsingDone = false;
-    private Map<String, Object> version = new HashMap<String, Object>();
-    private Map<String, Object> parameters = new HashMap<String, Object>();
-    public ArrayList<MessageLog> loggedMessages = new ArrayList<MessageLog>();
+    private Map<String, Object> version = new HashMap<String, Object>();//版本
+    private Map<String, Object> parameters = new HashMap<String, Object>();//参数
+    public ArrayList<MessageLog> loggedMessages = new ArrayList<MessageLog>();//日志信息
 
     private String hardfaultPlainText = "";
 
@@ -70,7 +70,7 @@ public class ULogReader extends BinaryLogReader {
         private String name;
         private Object value;
         private long timestamp = -1;
-        private ParamUpdate(String nm, Object v, long ts) {
+        private ParamUpdate(String nm, Object v, long ts) {//按照这格式把变量放到容器内
             name = nm;
             value = v;
             timestamp = ts;
@@ -87,10 +87,10 @@ public class ULogReader extends BinaryLogReader {
         public long getTimestamp() {
             return timestamp;
         }
-    }
-    private List<Exception> errors = new ArrayList<Exception>();
+    }//以上是分开获取
+    private List<Exception> errors = new ArrayList<Exception>();//如果得到错误，记录在这个里面
     private int logVersion = 0;
-    private int headerSize = 2;
+    private int headerSize = 2;//报头大小
 
     /** Index for fast(er) seeking */
     private ArrayList<SeekTime> seekTimes = null;
@@ -107,8 +107,8 @@ public class ULogReader extends BinaryLogReader {
 
     public ULogReader(String fileName) throws IOException, FormatErrorException {
         super(fileName);
-        parameterUpdates = new HashMap<String, List<ParamUpdate>>();
-        updateStatistics();
+        parameterUpdates = new HashMap<String, List<ParamUpdate>>();//存在一个map里
+        updateStatistics();//运行这个来读
     }
 
     @Override
@@ -156,7 +156,7 @@ public class ULogReader extends BinaryLogReader {
      * @throws IOException
      * @throws FormatErrorException
      */
-    private void readFileHeader() throws IOException, FormatErrorException {
+    private void readFileHeader() throws IOException, FormatErrorException {//读报头的部分，检查是否正确
         fillBuffer(FILE_MAGIC_HEADER_LENGTH);
         //magic + version
         boolean error = false;
@@ -175,10 +175,10 @@ public class ULogReader extends BinaryLogReader {
         if ((buffer.get() & 0xFF) != 0x35)
             error = true;
         if ((buffer.get() & 0xFF) > 0x01 && !error) {
-            System.out.println("ULog: Different version than expected. Will try anyway");
+            System.out.println("ULog: Different version than expected. Will try anyway");//只要报头不是上面的那个内容，就打印版本错误
         }
         if (error)
-            throw new FormatErrorException("ULog: Wrong file format");
+            throw new FormatErrorException("ULog: Wrong file format");//如果有错误就发送格式错误信号
 
         logStartTimestamp = buffer.getLong();
     }
@@ -190,7 +190,7 @@ public class ULogReader extends BinaryLogReader {
      * @throws IOException
      * @throws FormatErrorException
      */
-    private void updateStatistics() throws IOException, FormatErrorException {
+    private void updateStatistics() throws IOException, FormatErrorException {//这里是读内容，也就是调用这个读取方法执行的过程，首先将文件名通过类共用变量传递进来，运行读报头确认可读，否则返回格式错误
         position(0);
         readFileHeader();
         long packetsNum = 0;
@@ -208,6 +208,11 @@ public class ULogReader extends BinaryLogReader {
                 break;
             }
             packetsNum++;
+//msg内部存储了所有参数数量长度等等内容格式等等，还有所有参数,以及记录的变量数据类型长度等等，可以写成一个文件看一下，他们为msg写了tostring方法，可以直接用
+            File desktopDir = FileSystemView.getFileSystemView().getHomeDirectory();
+            String desktopPath = desktopDir.getAbsolutePath();
+            //Filewriter filewriter = new Filewriter();
+           // filewriter.filewriter_in_spe_location(desktopPath,"Allinfo.txt",msg.toString());
 
             if (msg instanceof MessageFlagBits) {
                 MessageFlagBits msgFlags = (MessageFlagBits) msg;
@@ -429,17 +434,17 @@ public class ULogReader extends BinaryLogReader {
      * @throws IOException  on IO error
      * @throws EOFException on end of stream
      */
-    public Object readMessage() throws IOException, FormatErrorException {
+    public Object readMessage() throws IOException, FormatErrorException {//读消息
         while (true) {
             fillBuffer(HDRLEN);
             long pos = position();
-            int s1 = buffer.get() & 0xFF;
+            int s1 = buffer.get() & 0xFF;//补码保证二进制一致性
             int s2 = buffer.get() & 0xFF;
-            int msgSize = s1 + (256 * s2);
-            int msgType = buffer.get() & 0xFF;
+            int msgSize = s1 + (256 * s2);//这里得到信息部分的长度，应该是一个报头s1，每个信息长度256，总共s2个
+            int msgType = buffer.get() & 0xFF;//第三个量存储的是信息类型
 
             // check if we cross an appending boundary: if so, we need to reset the position and skip this message
-            if (currentAppendingOffsetIndex < appendedOffsets.size()) {
+            if (currentAppendingOffsetIndex < appendedOffsets.size()) {//pos是一个定位文件位置的变量
                 if (pos + HDRLEN + msgSize > appendedOffsets.get(currentAppendingOffsetIndex)) {
                     //System.out.println("Jumping to next position: "+pos + ", next: "+appendedOffsets.get(currentAppendingOffsetIndex));
                     position(appendedOffsets.get(currentAppendingOffsetIndex));
@@ -455,7 +460,7 @@ public class ULogReader extends BinaryLogReader {
                 throw e;
             }
             Object msg;
-            switch (msgType) {
+            switch (msgType) {//接下来有几种类型的信息
             case MESSAGE_TYPE_DATA:
                 s1 = buffer.get() & 0xFF;
                 s2 = buffer.get() & 0xFF;
@@ -514,7 +519,9 @@ public class ULogReader extends BinaryLogReader {
                 errors.add(new FormatErrorException(pos, "Message size mismatch, parsed: " + sizeParsed + ", msg size: " + msgSize));
                 buffer.position(buffer.position() + msgSize - sizeParsed);
             }
-            return msg;
+            System.out.println(msg.toString());
+            return msg;//到这里读完
+
         }
     }
 
