@@ -25,9 +25,9 @@ public class ULogReader extends BinaryLogReader {//定义报头
     static final byte MESSAGE_TYPE_FLAG_BITS = (byte) 'B';
     static final int HDRLEN = 3;
     static final int FILE_MAGIC_HEADER_LENGTH = 16;
-
+    public File fileraw = new File("D:" + File.separator + "matlabraw.txt");
     static final int INCOMPAT_FLAG0_DATA_APPENDED_MASK = 1<<0;
-
+    public FileWriter writer = new FileWriter(fileraw,true);
     private String systemName = "PX4";
     private long dataStart = 0;
     private Map<String, MessageFormat> messageFormats = new HashMap<String, MessageFormat>();
@@ -410,9 +410,12 @@ public class ULogReader extends BinaryLogReader {//定义报头
             Object msg = readMessage();
             if (msg instanceof MessageData) {
                 applyMsg(update, (MessageData) msg);
+                writer.close();
+
                 return ((MessageData) msg).timestamp;
             }
         }
+
     }
 
     @Override
@@ -514,7 +517,7 @@ public class ULogReader extends BinaryLogReader {//定义报头
             }
            // System.out.println(msg.toString());
             /********************************/
-
+            writer.write(msg.toString());
             return msg;//到这里读完
 
         }
@@ -586,7 +589,7 @@ public class ULogReader extends BinaryLogReader {//定义报头
                 writer.close();
 
 */
-  
+
                 // keys in Map "update" are fieldnames beginning with the topic name e.g. SENSOR_GYRO_0.someField
                 // Create a printstream for each topic when it is first encountered
                 Set<String> keySet = update.keySet();
