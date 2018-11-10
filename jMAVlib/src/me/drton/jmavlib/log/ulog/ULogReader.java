@@ -2,7 +2,7 @@ package me.drton.jmavlib.log.ulog;
 //这个是ulog格式的阅读器
 import java.io.*;
 import java.util.*;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 
 import me.drton.jmavlib.log.BinaryLogReader;
@@ -12,6 +12,7 @@ import me.drton.jmavlib.log.FormatErrorException;
  * User: ton Date: 03.06.13 Time: 14:18
  */
 public class ULogReader extends BinaryLogReader {//定义报头
+    public int counter = 0;
     static final byte MESSAGE_TYPE_FORMAT = (byte) 'F';
     static final byte MESSAGE_TYPE_DATA = (byte) 'D';
     static final byte MESSAGE_TYPE_INFO = (byte) 'I';
@@ -31,6 +32,8 @@ public class ULogReader extends BinaryLogReader {//定义报头
     private String systemName = "PX4";
     private long dataStart = 0;
     private Map<String, MessageFormat> messageFormats = new HashMap<String, MessageFormat>();
+  //  public StringBuffer buffer = new StringBuffer();
+   public BufferedWriter nl = new BufferedWriter(writer);
 
     private class Subscription {
         public Subscription(MessageFormat f, int multiID) {
@@ -517,31 +520,73 @@ public class ULogReader extends BinaryLogReader {//定义报头
             }
            // System.out.println(msg.toString());
             /********************************/
-            writer.write(msg.toString());
+           // if(counter <= 500) {
+            //    writer.write(msg.toString());
+            //   writer.write("\r\n");
+            //    counter++;
+          //  }
             return msg;//到这里读完
 
         }
     }
+    public static boolean deleteFile(File dirFile) {
+        // 如果dir对应的文件不存在，则退出
+        if (!dirFile.exists()) {
+            return false;
+        }
+         if (dirFile.isFile()) {
+             return dirFile.delete();
+         }else
+             {
+                 for (File file : dirFile.listFiles()) {
+                     deleteFile(file); }
+             }
+             return dirFile.delete();
+    }
+
 
     /*
     Dump each stream of message data records to a CSV file named "topic_N.csv"
     First line of each file is "timestamp,field1,field2,..."
      */
+
     public static void main(String[] args) throws Exception {
         ULogReader reader = null;
         JFileChooser openLogFileChooser = new JFileChooser();
-        String basePath = "/home/markw/gdrive/flightlogs/logger";
+        String basePath = "D:";
         openLogFileChooser.setCurrentDirectory(new File(basePath));
+        File file = new File("D:"+File.separator + "temp.bin");
         int returnVal = openLogFileChooser.showDialog(null, "Open");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = openLogFileChooser.getSelectedFile();
+            file = openLogFileChooser.getSelectedFile();
             String logFileName = file.getPath();
             basePath = file.getParent();
             reader = new ULogReader(logFileName);
         } else {
             System.exit(0);
         }
+        StringBuffer buf = new StringBuffer();
+        buf.append(basePath);
+        String temp = file.getName();
+        temp = temp.replace(".ulg","");
+        buf.append(File.separator);
+        buf.append(temp);
+        basePath = buf.toString();
+        file=new File(basePath);
+        if(!file.exists()){//如果文件夹不存在
+            file.mkdir();//创建文件夹
+
+        }
+        else{
+            for (File file2 : file.listFiles()) {
+                deleteFile(file2);
+            }
+            file.mkdir();
+        }
+        //System.out.println(basePath);
+        //System.out.println(file.getName());
         // write all parameters to a gnu Octave data file
+        /**
         FileWriter fileWriter = new FileWriter(new File(basePath + File.separator + "parameters.text"));
         Map<String, Object> tmap = new TreeMap<String, Object>(reader.parameters);
         Set pSet = tmap.entrySet();
@@ -550,6 +595,9 @@ public class ULogReader extends BinaryLogReader {//定义报头
             fileWriter.write(String.format("# name: %s\n#type: scalar\n%s\n", param.getKey(), param.getValue()));
         }
         fileWriter.close();
+*/
+
+
         long tStart = System.currentTimeMillis();
         double last_t = 0;
         double last_p = 0;
@@ -571,24 +619,8 @@ public class ULogReader extends BinaryLogReader {//定义报头
                     last_p = tsec;
                     System.out.printf("%8.0f\n", tsec);
                 }
-/**
-                System.out.println("here");
-                File file = new File("D:" + File.separator + "FlightPlot_out.m");
-                StringBuffer buffer = new StringBuffer();
-                FileWriter writer = new FileWriter(file, false);
-                BufferedWriter nl = new BufferedWriter(writer);
 
-                for(Map.Entry entry:update.entrySet()){
-                                        String key = (String) entry.getKey();
-                                        System.out.println(key);
-                    String value = (String) entry.getValue();
-                    buffer.append(key + ":" + value);
-                    nl.newLine();
-                }
-                writer.write(buffer.toString());
-                writer.close();
 
-*/
 
                 // keys in Map "update" are fieldnames beginning with the topic name e.g. SENSOR_GYRO_0.someField
                 // Create a printstream for each topic when it is first encountered
@@ -651,6 +683,7 @@ public class ULogReader extends BinaryLogReader {//定义报头
         }
         System.out.println(tEnd - tStart);
         reader.close();
+        JOptionPane.showMessageDialog(null,"完成！");
     }
 
     @Override

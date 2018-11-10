@@ -37,6 +37,6 @@ public class MessageData {
 
     @Override
     public String toString() {
-        return String.format("DATA: t=%s multi_id=%s, name=%s, data=%s", timestamp, multiID, format.name, data);
+        return String.format("DATA: t=%d multi_id=%d, name=%s, data=%s", timestamp, multiID, format.name, data);
     }
 }
