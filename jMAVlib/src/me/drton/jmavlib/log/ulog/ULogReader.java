@@ -1,7 +1,12 @@
 package me.drton.jmavlib.log.ulog;
 //这个是ulog格式的阅读器
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 
@@ -544,7 +549,104 @@ public class ULogReader extends BinaryLogReader {//定义报头
              return dirFile.delete();
     }
 
+    public Object readfile(String filepath) throws FileNotFoundException, IOException {
+        try {
 
+            File file = new File(filepath);
+            if (!file.isDirectory()) {
+              //  System.out.println("文件");
+              //  System.out.println("path=" + file.getPath());
+               // System.out.println("absolutepath=" + file.getAbsolutePath());
+              //  System.out.println("name=" + file.getName());
+            return file;
+            } else if (file.isDirectory()) {
+             //   System.out.println("文件夹");
+                String[] filelist = file.list();
+                for (int i = 0; i < filelist.length; i++) {
+                    File readfile = new File(filepath + "\\" + filelist[i]);
+                    if (!readfile.isDirectory()) {
+                        System.out.println("path=" + readfile.getPath());
+                        System.out.println("absolutepath="
+                                + readfile.getAbsolutePath());
+                        System.out.println("name=" + readfile.getName());
+
+                    } else if (readfile.isDirectory()) {
+                        readfile(filepath + "\\" + filelist[i]);
+                    }
+                }
+
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("readfile()   Exception:" + e.getMessage());
+        }
+        return true;
+    }
+
+    public static List<String> getAllFile(String directoryPath,boolean isAddDirectory) {
+        List<String> list = new ArrayList<String>();
+        File baseFile = new File(directoryPath);
+        if (baseFile.isFile() || !baseFile.exists()) {
+            return list;
+        }
+        File[] files = baseFile.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if(isAddDirectory){
+                    list.add(file.getAbsolutePath());
+                }
+                list.addAll(getAllFile(file.getAbsolutePath(),isAddDirectory));
+            } else {
+                list.add(file.getAbsolutePath());
+            }
+        }
+        return list;
+    }
+    private static JFileChooser showCustomDialog(Frame owner, Component parentComponent) {
+        // 创建一个模态对话框
+        final JDialog dialog = new JDialog(owner, "Ulog数据导出器 魅影版", true);
+        //设置对话框的宽高
+        dialog.setSize(500, 400);
+        // 设置对话框大小不可改变
+        dialog.setResizable(false);
+        //设置对话框相对显示的位置
+        dialog.setLocationRelativeTo(parentComponent);
+        // 创建一个标签显示消息内容
+        JLabel messageLabel = new JLabel("完成后会有提示,时间较长，请耐心等待");
+        JLabel messageLabel3 = new JLabel("可以多选或者单选文件，生成同名文件夹保存数据");
+        JLabel messageLabel2 = new JLabel("Powered by Di Weicheng");
+        //创建一个按钮用于关闭对话框
+        JButton okBtn = new JButton("选择文件");
+        okBtn.addActionListener(new ActionListener() {
+                                    @Override
+                                    public void actionPerformed(ActionEvent e) {
+                                        //关闭对话框
+                                        dialog.dispose();
+                                    }
+                                });
+        // 创建对话框的内容面板, 在面板内可以根据自己的需要添加任何组件并做任意是布局
+        JPanel panel = new JPanel();
+        // 添加组件到面板
+
+
+
+        okBtn.setBounds(200, 280, 100, 40);//按钮的位置大小
+        messageLabel.setBounds(50,20,400,50);
+        messageLabel2.setBounds(320,320,400,50);
+        messageLabel3.setBounds(50,60,400,50);
+        panel.setLayout(null);//自定义布局
+        panel.add(okBtn);
+        panel.add(messageLabel);
+        panel.add(messageLabel2);
+        panel.add(messageLabel3);
+
+                                    // 设置对话框的内容面板
+        dialog.setContentPane(panel);
+        // 显示对话框
+        dialog.setVisible(true);
+        JFileChooser openLogFileChooser = new JFileChooser();
+        return openLogFileChooser;
+    }
     /*
     Dump each stream of message data records to a CSV file named "topic_N.csv"
     First line of each file is "timestamp,field1,field2,..."
@@ -552,138 +654,177 @@ public class ULogReader extends BinaryLogReader {//定义报头
 
     public static void main(String[] args) throws Exception {
         ULogReader reader = null;
-        JFileChooser openLogFileChooser = new JFileChooser();
-        String basePath = "D:";
-        openLogFileChooser.setCurrentDirectory(new File(basePath));
-        File file = new File("D:"+File.separator + "temp.bin");
-        int returnVal = openLogFileChooser.showDialog(null, "Open");
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            file = openLogFileChooser.getSelectedFile();
-            String logFileName = file.getPath();
-            basePath = file.getParent();
-            reader = new ULogReader(logFileName);
-        } else {
-            System.exit(0);
-        }
-        StringBuffer buf = new StringBuffer();
-        buf.append(basePath);
-        String temp = file.getName();
-        temp = temp.replace(".ulg","");
-        buf.append(File.separator);
-        buf.append(temp);
-        basePath = buf.toString();
-        file=new File(basePath);
-        if(!file.exists()){//如果文件夹不存在
-            file.mkdir();//创建文件夹
+        File[] file3 ;
+        JFileChooser openLogFileChooser;
+     //   JFrame fr = new JFrame("Ulog数据导出导出器");
+      //  fr.setSize(300, 300);
+      //  fr.setLocationRelativeTo(null);
+      //  fr.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+      //  JButton btn = new JButton("运行");
+      //  btn.addActionListener(new ActionListener() {
+       //     @Override
+       //     public void actionPerformed(ActionEvent e) {
+        //        showCustomDialog(fr, fr);
+         //   }
+      //  });
+      //  JPanel panel = new JPanel();
+      //  panel.add(btn);
 
-        }
-        else{
-            for (File file2 : file.listFiles()) {
-                deleteFile(file2);
+     //   fr.setContentPane(panel);
+      //  fr.setVisible(false);
+       // JDialog log = new JDialog(fr, "完成后会有提示，点击确定开始",true);
+        openLogFileChooser = showCustomDialog(null, null);
+
+
+
+        openLogFileChooser.setMultiSelectionEnabled(true);//这里是可以多选
+
+
+        int mod;
+        //mod=JFileChooser.FILES_ONLY  ;//只选择文件
+        //mod=JFileChooser.DIRECTORIES_ONLY  ;//只选择目录
+        mod=JFileChooser.FILES_AND_DIRECTORIES ;//文件和目录
+        openLogFileChooser.setFileSelectionMode(mod);//这里是选择选择信息的模式
+        int returnVal  = openLogFileChooser.showDialog(openLogFileChooser, "确认");//打开文件选择框
+        file3=openLogFileChooser.getSelectedFiles();
+
+        int counter = 0;
+        for(File s:file3) {
+            System.out.println(s);
+            File p = s;
+
+            String basePath = "D:";
+           // openLogFileChooser.setCurrentDirectory(new File(basePath));
+        //    File file = new File("D:" + File.separator + "temp.bin");
+         //   int returnVal = openLogFileChooser.showDialog(null, "Open");
+           // if (returnVal == JFileChooser.APPROVE_OPTION) {
+         //       file = openLogFileChooser.getSelectedFile();
+                String logFileName = p.getPath();
+                basePath = p.getParent();
+                reader = new ULogReader(logFileName);
+        //    } else {
+       //         System.exit(0);
+        //    }
+            StringBuffer buf = new StringBuffer();
+            buf.append(basePath);
+            String temp = p.getName();
+            temp = temp.replace(".ulg", "");
+            buf.append(File.separator);
+            buf.append(temp);
+            basePath = buf.toString();
+            p = new File(basePath);
+            if (!p.exists()) {//如果文件夹不存在
+                p.mkdir();//创建文件夹
+
+            } else {
+                for (File file2 : p.listFiles()) {
+                    deleteFile(file2);
+                }
+                p.mkdir();
             }
-            file.mkdir();
-        }
-        //System.out.println(basePath);
-        //System.out.println(file.getName());
-        // write all parameters to a gnu Octave data file
-        /**
-        FileWriter fileWriter = new FileWriter(new File(basePath + File.separator + "parameters.text"));
-        Map<String, Object> tmap = new TreeMap<String, Object>(reader.parameters);
-        Set pSet = tmap.entrySet();
-        for (Object aPSet : pSet) {
-            Map.Entry param = (Map.Entry) aPSet;
-            fileWriter.write(String.format("# name: %s\n#type: scalar\n%s\n", param.getKey(), param.getValue()));
-        }
-        fileWriter.close();
-*/
+            //System.out.println(basePath);
+            //System.out.println(file.getName());
+            // write all parameters to a gnu Octave data file
+
+            //FileWriter fileWriter = new FileWriter(new File(basePath + File.separator + "parameters.text"));
+            //Map<String, Object> tmap = new TreeMap<String, Object>(reader.parameters);
+            //Set pSet = tmap.entrySet();
+            //for (Object aPSet : pSet) {
+            //    Map.Entry param = (Map.Entry) aPSet;
+            //    fileWriter.write(String.format("# name: %s\n#type: scalar\n%s\n", param.getKey(), param.getValue()));
+            //}
+            //fileWriter.close();
 
 
-        long tStart = System.currentTimeMillis();
-        double last_t = 0;
-        double last_p = 0;
-        Map<String, PrintStream> ostream = new HashMap<String, PrintStream>();
-        Map<String, Double> lastTimeStamp = new HashMap<String, Double>();
-        double min_dt = 1;
-        while (true) {
+            long tStart = System.currentTimeMillis();
+            double last_t = 0;
+            double last_p = 0;
+            Map<String, PrintStream> ostream = new HashMap<String, PrintStream>();
+            Map<String, Double> lastTimeStamp = new HashMap<String, Double>();
+            double min_dt = 1;
+            while (true) {
 //            try {
 //                Object msg = reader.readMessage();
 //                System.out.println(msg);
 //            } catch (EOFException e) {
 //                break;
 //            }
-            Map<String, Object> update = new HashMap<String, Object>();
-            try {
-                long t = reader.readUpdate(update);
-                double tsec = (double)t / 1e6;
-                if (tsec > (last_p + 1)) {
-                    last_p = tsec;
-                    System.out.printf("%8.0f\n", tsec);
-                }
+                Map<String, Object> update = new HashMap<String, Object>();
+                try {
+                    long t = reader.readUpdate(update);
+                    double tsec = (double) t / 1e6;
+                    if (tsec > (last_p + 1)) {
+                        last_p = tsec;
+                        System.out.printf("%8.0f\n", tsec);
+                    }
 
 
-
-                // keys in Map "update" are fieldnames beginning with the topic name e.g. SENSOR_GYRO_0.someField
-                // Create a printstream for each topic when it is first encountered
-                Set<String> keySet = update.keySet();
-                String stream = keySet.iterator().next().split("\\.")[0];
-                if (!ostream.containsKey(stream)) {
-                    System.out.println("creating stream " + stream);
-                    PrintStream newStream = new PrintStream(basePath + File.separator + stream + ".csv");
-                    ostream.put(stream, newStream);
-                    lastTimeStamp.put(stream, tsec);
+                    // keys in Map "update" are fieldnames beginning with the topic name e.g. SENSOR_GYRO_0.someField
+                    // Create a printstream for each topic when it is first encountered
+                    Set<String> keySet = update.keySet();
+                    String stream = keySet.iterator().next().split("\\.")[0];
+                    if (!ostream.containsKey(stream)) {
+                        System.out.println("creating stream " + stream);
+                        PrintStream newStream = new PrintStream(basePath + File.separator + stream + ".csv");
+                        ostream.put(stream, newStream);
+                        lastTimeStamp.put(stream, tsec);
+                        Iterator<String> keys = keySet.iterator();
+                        newStream.print("timestamp");
+                        while (keys.hasNext()) {
+                            String fieldName = keys.next();
+                            if (!fieldName.contains("_padding") && fieldName != "timestamp") {
+                                newStream.print(',');
+                                newStream.print(fieldName);
+                            }
+                        }
+                        newStream.println();
+                    }
+                    // append this record to output stream
+                    PrintStream curStream = ostream.get(stream);
+                    // timestamp is always first entry in record
+                    curStream.print(t);
+                    // for each non-padding field, print value
                     Iterator<String> keys = keySet.iterator();
-                    newStream.print("timestamp");
                     while (keys.hasNext()) {
                         String fieldName = keys.next();
                         if (!fieldName.contains("_padding") && fieldName != "timestamp") {
-                            newStream.print(',');
-                            newStream.print(fieldName);
+                            curStream.print(',');
+                            curStream.print(update.get(fieldName));
                         }
                     }
-                    newStream.println();
-                }
-                // append this record to output stream
-                PrintStream curStream = ostream.get(stream);
-                // timestamp is always first entry in record
-                curStream.print(t);
-                // for each non-padding field, print value
-                Iterator<String> keys = keySet.iterator();
-                while (keys.hasNext()) {
-                    String fieldName = keys.next();
-                    if (!fieldName.contains("_padding") && fieldName != "timestamp") {
-                        curStream.print(',');
-                        curStream.print(update.get(fieldName));
-                    }
-                }
 //                for (Object field: update.values()) {
 //                    curStream.print(',');
 //                    curStream.print(field.toString());
 //                }
-                curStream.println();
-                // check gyro stream for dropouts
-                if (stream.startsWith("SENSOR_GYRO")) {
-                    double dt = tsec - lastTimeStamp.get(stream);
-                    double rdt = Math.rint(1000*dt) / 1000;
-                    if ((dt > 0) && (rdt < min_dt)) {
-                        min_dt = rdt;
-                        System.out.println("rdt: " + rdt);
+                    curStream.println();
+                    // check gyro stream for dropouts
+                    if (stream.startsWith("SENSOR_GYRO")) {
+                        double dt = tsec - lastTimeStamp.get(stream);
+                        double rdt = Math.rint(1000 * dt) / 1000;
+                        if ((dt > 0) && (rdt < min_dt)) {
+                            min_dt = rdt;
+                            System.out.println("rdt: " + rdt);
+                        }
+                        if (dt > (5 * min_dt)) {
+                            System.out.println("gyro dropout: " + lastTimeStamp.get(stream) + ", length: " + dt);
+                        }
+                        lastTimeStamp.put(stream, tsec);
                     }
-                    if (dt > (5 * min_dt)) {
-                        System.out.println("gyro dropout: " + lastTimeStamp.get(stream) + ", length: " + dt);
-                    }
-                    lastTimeStamp.put(stream, tsec);
+                } catch (EOFException e) {
+                    break;
                 }
-            } catch (EOFException e) {
-                break;
             }
+            long tEnd = System.currentTimeMillis();
+            for (Exception e : reader.getErrors()) {
+                e.printStackTrace();
+            }
+            System.out.println(tEnd - tStart);
+            reader.close();
+
+
         }
-        long tEnd = System.currentTimeMillis();
-        for (Exception e : reader.getErrors()) {
-            e.printStackTrace();
-        }
-        System.out.println(tEnd - tStart);
-        reader.close();
-        JOptionPane.showMessageDialog(null,"完成！");
+        JOptionPane.showMessageDialog(null, "完成！");
+        System.exit(0);
     }
 
     @Override
